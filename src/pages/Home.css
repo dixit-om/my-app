@@ -1,0 +1,22 @@
+.home-content {
+  --background: var(--ion-background-color, #fff);
+}
+
+.fin-notify-hero {
+  padding: 1.5rem 1.25rem 1rem;
+}
+
+.fin-notify-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin: 0 0 0.75rem;
+  letter-spacing: 0.02em;
+  color: var(--ion-text-color, #1e1e1e);
+}
+
+.fin-notify-tagline {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin: 0;
+  max-width: 22rem;
+}
