@@ -22,8 +22,19 @@ const Home: React.FC = () => {
       <div className="fin-notify-hero">
         <h1 className="fin-notify-title">Welcome back</h1>
         <IonText color="medium">
-          <p className="fin-notify-tagline">Here is a quick snapshot. Everything below is sample data to show the flow of the app.</p>
+          <p className="fin-notify-tagline">
+            Turn formal bank, insurance, and policy text into a short, simple explanation—in the language you choose. Use
+            &quot;Understand a message&quot; to try the demo. Numbers below are sample only.
+          </p>
         </IonText>
+      </div>
+      <div className="ion-padding-horizontal ion-padding-bottom">
+        <IonButton expand="block" color="primary" routerLink="/explain" routerDirection="none" size="large">
+          Understand a message
+        </IonButton>
+        <p className="ion-text-color-medium" style={{ fontSize: '0.8rem', textAlign: 'center', marginTop: '0.5rem' }}>
+          Paste a mail or SMS, get a plain version (mock for now; API later)
+        </p>
       </div>
       <IonGrid className="ion-no-padding home-stats">
         <IonRow>

@@ -32,6 +32,11 @@ const AppMenu: React.FC = () => {
             </IonItem>
           </IonMenuToggle>
           <IonMenuToggle autoHide>
+            <IonItem routerLink="/explain" routerDirection="none" detail={false} lines="full">
+              <IonLabel>Understand a message</IonLabel>
+            </IonItem>
+          </IonMenuToggle>
+          <IonMenuToggle autoHide>
             <IonItem routerLink="/notifications" routerDirection="none" detail={false} lines="full">
               <IonLabel>Notifications</IonLabel>
             </IonItem>

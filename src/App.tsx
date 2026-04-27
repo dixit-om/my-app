@@ -5,6 +5,7 @@ import { AppMenu } from './components/AppMenu';
 import Home from './pages/Home';
 import Notifications from './pages/Notifications';
 import Settings from './pages/Settings';
+import ExplainMail from './pages/ExplainMail';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -51,6 +52,9 @@ const App: React.FC = () => (
         </Route>
         <Route exact path="/settings">
           <Settings />
+        </Route>
+        <Route exact path="/explain">
+          <ExplainMail />
         </Route>
         <Route exact path="/">
           <Redirect to="/home" />

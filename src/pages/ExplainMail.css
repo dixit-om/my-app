@@ -1,0 +1,38 @@
+.explain-note {
+  font-size: 0.85rem;
+  line-height: 1.45;
+}
+
+.explain-block {
+  margin: 0 0 0.5rem;
+}
+
+.explain-block h2 {
+  font-size: 1.05rem;
+  margin: 0 0 0.35rem;
+  font-weight: 600;
+}
+
+.explain-block p {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin: 0;
+  color: var(--ion-color-dark);
+}
+
+body.ion-palette-dark .explain-block p {
+  color: var(--ion-color-light);
+}
+
+.explain-try-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.explain-try-label {
+  font-size: 0.85rem;
+  color: var(--ion-color-medium, #666);
+}
