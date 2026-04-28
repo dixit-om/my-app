@@ -1,16 +1,31 @@
+.explain-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+
 .explain-note {
   font-size: 0.85rem;
   line-height: 1.45;
+  margin: 0.4rem 0 0.75rem;
+}
+
+.explain-chip {
+  margin-left: 0;
+  height: 1.4rem;
+}
+
+.explain-subnote {
+  font-size: 0.8rem;
 }
 
 .explain-block {
   margin: 0 0 0.5rem;
 }
 
-.explain-block h2 {
-  font-size: 1.05rem;
+.explain-section-title {
+  font-size: 1rem;
   margin: 0 0 0.35rem;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .explain-block p {
@@ -32,7 +47,21 @@ body.ion-palette-dark .explain-block p {
   gap: 0.5rem;
 }
 
+.explain-actions {
+  display: flex;
+  gap: 0.25rem;
+  align-items: center;
+}
+
 .explain-try-label {
   font-size: 0.85rem;
   color: var(--ion-color-medium, #666);
+}
+
+.explain-result {
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+body.ion-palette-dark .explain-result {
+  border-color: rgba(255, 255, 255, 0.08);
 }

@@ -2,6 +2,9 @@ import {
   IonButton,
   IonCard,
   IonCardContent,
+  IonChip,
+  IonCol,
+  IonGrid,
   IonItem,
   IonLabel,
   IonList,
@@ -10,6 +13,8 @@ import {
   IonSelectOption,
   IonSpinner,
   IonTextarea,
+  IonText,
+  IonRow,
   useIonToast,
 } from '@ionic/react';
 import { useCallback, useState } from 'react';
@@ -59,13 +64,16 @@ const ExplainMail: React.FC = () => {
   return (
     <PageWithMenu title="Understand a message" contentClassName="ion-padding-bottom">
       <div className="ion-padding">
-        <h1 className="ion-no-margin" style={{ fontSize: '1.1rem' }}>
-          Paste bank, insurance, or policy text
-        </h1>
-        <p className="ion-text-color-medium explain-note">
-          Copy the email or SMS, paste here, pick a language for the simple version, then tap the button. This
-          screen uses <strong>demo</strong> text (no real AI) until the backend is connected.
-        </p>
+        <h1 className="ion-no-margin explain-title">Paste a message</h1>
+        <IonText color="medium">
+          <p className="explain-note">
+            Copy bank / insurance / policy text (email or SMS) and paste it here. Pick a language for the plain version, then tap
+            explain.
+          </p>
+        </IonText>
+        <IonChip color="medium" className="explain-chip">
+          DEMO (no AI yet)
+        </IonChip>
       </div>
 
       <IonList inset>
@@ -99,57 +107,80 @@ const ExplainMail: React.FC = () => {
             ))}
           </IonSelect>
         </IonItem>
+        <IonItem lines="none">
+          <IonNote className="explain-subnote">
+            {text.trim().length ? `${text.trim().length} characters` : 'Tip: try “Load sample” if you don’t have a message now.'}
+          </IonNote>
+        </IonItem>
       </IonList>
 
       <div className="ion-padding">
         <div className="explain-try-row ion-padding-bottom">
           <span className="explain-try-label">Test without real mail</span>
-          <IonButton
-            size="small"
-            fill="outline"
-            onClick={() => {
-              setText(SAMPLE_IN);
-            }}
-          >
-            Load sample
-          </IonButton>
+          <div className="explain-actions">
+            <IonButton
+              size="small"
+              fill="outline"
+              onClick={() => {
+                setText(SAMPLE_IN);
+              }}
+            >
+              Load sample
+            </IonButton>
+            <IonButton
+              size="small"
+              fill="clear"
+              onClick={() => {
+                setText('');
+                setExplanation(null);
+              }}
+            >
+              Clear
+            </IonButton>
+          </div>
         </div>
         <IonButton expand="block" color="primary" disabled={loading} onClick={onExplain}>
           {loading ? <IonSpinner slot="start" name="crescent" color="light" /> : null}
-          {loading ? 'Explaining (demo)…' : 'Get plain explanation (demo)'}
+          {loading ? 'Explaining…' : 'Explain in simple words'}
         </IonButton>
       </div>
 
       {explanation ? (
-        <IonCard className="ion-margin-horizontal" style={{ marginTop: '0.5rem' }}>
+        <IonCard className="ion-margin-horizontal explain-result" style={{ marginTop: '0.5rem' }}>
           <IonCardContent>
             <div className="explain-block">
-              <h2>{explanation.simpleTitle}</h2>
+              <h2 className="explain-section-title">{explanation.simpleTitle}</h2>
               <p>{explanation.summary}</p>
             </div>
-            {explanation.whatToDo ? (
-              <div className="explain-block">
-                <h2>What you need to do</h2>
-                <p>{explanation.whatToDo}</p>
-              </div>
-            ) : null}
-            {explanation.dueOrDate ? (
-              <div className="explain-block">
-                <h2>Date / deadline</h2>
-                <p>{explanation.dueOrDate}</p>
-              </div>
-            ) : null}
-            {explanation.watchOut ? (
-              <div className="explain-block">
-                <h2>Be careful / double-check</h2>
-                <p>{explanation.watchOut}</p>
-              </div>
-            ) : null}
-            <IonNote>
-              {lang === 'en' || lang === 'hi'
-                ? 'Demo: Hindi/English have sample wording. Other choices show English for now, plus a note, until the API is added.'
-                : 'Demo: you picked ' + (LANG_LABEL[lang] ?? lang) + '. Full line-by-line translation will use the same screen after the API is live.'}
-            </IonNote>
+            <IonGrid className="ion-no-padding explain-grid">
+              <IonRow>
+                {explanation.whatToDo ? (
+                  <IonCol size="12">
+                    <div className="explain-block">
+                      <h2 className="explain-section-title">What you need to do</h2>
+                      <p>{explanation.whatToDo}</p>
+                    </div>
+                  </IonCol>
+                ) : null}
+                {explanation.dueOrDate ? (
+                  <IonCol size="12">
+                    <div className="explain-block">
+                      <h2 className="explain-section-title">Date / deadline</h2>
+                      <p>{explanation.dueOrDate}</p>
+                    </div>
+                  </IonCol>
+                ) : null}
+                {explanation.watchOut ? (
+                  <IonCol size="12">
+                    <div className="explain-block">
+                      <h2 className="explain-section-title">Be careful / double-check</h2>
+                      <p>{explanation.watchOut}</p>
+                    </div>
+                  </IonCol>
+                ) : null}
+              </IonRow>
+            </IonGrid>
+            <IonNote>Demo: this is static text. Later we’ll replace it with the real API but keep the same screen.</IonNote>
           </IonCardContent>
         </IonCard>
       ) : null}
