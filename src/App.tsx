@@ -10,6 +10,8 @@ import Login from './pages/Login';
 import Signup from './pages/Signup';
 import ForgotPassword from './pages/ForgotPassword';
 import PrivateRoute from './auth/PrivateRoute';
+import Welcome from './pages/Welcome';
+import { useAuth } from './auth/AuthContext';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -43,11 +45,25 @@ import './theme/variables.css';
 
 setupIonicReact();
 
-const App: React.FC = () => (
-  <IonApp>
-    <AppMenu />
+const AppRoutes: React.FC = () => {
+  const { isAuthed } = useAuth();
+
+  return (
     <IonReactRouter>
+      {isAuthed ? <AppMenu /> : null}
       <IonRouterOutlet>
+        <Route exact path="/welcome">
+          <Welcome />
+        </Route>
+        <Route exact path="/login">
+          <Login />
+        </Route>
+        <Route exact path="/signup">
+          <Signup />
+        </Route>
+        <Route exact path="/forgot-password">
+          <ForgotPassword />
+        </Route>
         <Route exact path="/home">
           <Home />
         </Route>
@@ -60,20 +76,17 @@ const App: React.FC = () => (
         <PrivateRoute exact path="/explain">
           <ExplainMail />
         </PrivateRoute>
-        <Route exact path="/login">
-          <Login />
-        </Route>
-        <Route exact path="/signup">
-          <Signup />
-        </Route>
-        <Route exact path="/forgot-password">
-          <ForgotPassword />
-        </Route>
         <Route exact path="/">
-          <Redirect to="/home" />
+          <Redirect to={isAuthed ? '/home' : '/welcome'} />
         </Route>
       </IonRouterOutlet>
     </IonReactRouter>
+  );
+};
+
+const App: React.FC = () => (
+  <IonApp>
+    <AppRoutes />
   </IonApp>
 );
 

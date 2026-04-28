@@ -10,10 +10,13 @@ import {
   IonTitle,
   IonToolbar,
 } from '@ionic/react';
+import { useAuth } from '../auth/AuthContext';
 
 const MAIN_CONTENT_ID = 'main';
 
 const AppMenu: React.FC = () => {
+  const { isAuthed } = useAuth();
+
   return (
     <IonMenu contentId={MAIN_CONTENT_ID} side="start" type="overlay">
       <IonHeader>
@@ -46,11 +49,13 @@ const AppMenu: React.FC = () => {
               <IonLabel>Settings</IonLabel>
             </IonItem>
           </IonMenuToggle>
-          <IonMenuToggle autoHide>
-            <IonItem routerLink="/login" routerDirection="none" detail={false} lines="none">
-              <IonLabel>Sign in</IonLabel>
-            </IonItem>
-          </IonMenuToggle>
+          {!isAuthed ? (
+            <IonMenuToggle autoHide>
+              <IonItem routerLink="/login" routerDirection="none" detail={false} lines="none">
+                <IonLabel>Sign in</IonLabel>
+              </IonItem>
+            </IonMenuToggle>
+          ) : null}
         </IonList>
       </IonContent>
     </IonMenu>

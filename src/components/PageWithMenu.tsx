@@ -17,6 +17,7 @@ import {
 import type { FC, ReactNode } from 'react';
 import { useMemo, useState } from 'react';
 import { personCircleOutline } from 'ionicons/icons';
+import { useHistory } from 'react-router-dom';
 import { MAIN_CONTENT_ID } from './AppMenu';
 import { useAuth } from '../auth/AuthContext';
 
@@ -30,6 +31,7 @@ const PageWithMenu: FC<PageWithMenuProps> = ({ title, children, contentClassName
   const { isAuthed, user, signOut } = useAuth();
   const [profileOpen, setProfileOpen] = useState(false);
   const profileLabel = useMemo(() => user?.name || user?.email || 'Profile', [user]);
+  const history = useHistory();
 
   return (
     <IonPage id={MAIN_CONTENT_ID}>
@@ -63,6 +65,7 @@ const PageWithMenu: FC<PageWithMenuProps> = ({ title, children, contentClassName
                     onClick={() => {
                       signOut();
                       setProfileOpen(false);
+                      history.replace('/welcome');
                     }}
                   >
                     <IonLabel>Sign out</IonLabel>

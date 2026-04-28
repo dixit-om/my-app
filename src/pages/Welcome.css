@@ -1,0 +1,52 @@
+.welcome-content {
+  --background: var(--ion-background-color, #fff);
+}
+
+.welcome-wrap {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 26rem;
+  margin: 0 auto;
+}
+
+.welcome-logo {
+  width: 4.25rem;
+  height: 4.25rem;
+  border-radius: 1.1rem;
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  font-size: 1.25rem;
+  color: var(--ion-color-primary-contrast, #fff);
+  background: var(--ion-color-primary, #3880ff);
+  margin: 0 auto 1rem;
+  text-transform: lowercase;
+}
+
+.welcome-title {
+  text-align: center;
+  margin: 0 0 0.5rem;
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--ion-text-color, #1e1e1e);
+}
+
+.welcome-subtitle {
+  text-align: center;
+  margin: 0 0 1.5rem;
+  line-height: 1.5;
+  font-size: 0.95rem;
+}
+
+.welcome-actions {
+  width: 100%;
+}
+
+.welcome-link {
+  text-decoration: none;
+  display: block;
+}
+

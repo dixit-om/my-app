@@ -9,7 +9,7 @@ import {
   useIonToast,
 } from '@ionic/react';
 import { useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 import PageWithMenu from '../components/PageWithMenu';
 import { login } from '../services/authApi';
 import { useAuth } from '../auth/AuthContext';
@@ -20,6 +20,7 @@ const Login: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [presentToast] = useIonToast();
   const history = useHistory();
+  const location = useLocation<{ from?: string }>();
   const { signInWithToken } = useAuth();
 
   const onLogin = async () => {
@@ -32,7 +33,8 @@ const Login: React.FC = () => {
       const data = await login({ email: email.trim(), password });
       signInWithToken(data.idToken);
       void presentToast({ message: 'Signed in.', duration: 1400, color: 'success' });
-      history.replace('/home');
+      const next = location.state?.from ?? '/home';
+      history.replace(next);
     } catch (e: any) {
       void presentToast({ message: String(e?.message ?? 'Login failed'), duration: 2400, color: 'danger' });
     } finally {
