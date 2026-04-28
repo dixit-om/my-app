@@ -6,6 +6,10 @@ import Home from './pages/Home';
 import Notifications from './pages/Notifications';
 import Settings from './pages/Settings';
 import ExplainMail from './pages/ExplainMail';
+import Login from './pages/Login';
+import Signup from './pages/Signup';
+import ForgotPassword from './pages/ForgotPassword';
+import PrivateRoute from './auth/PrivateRoute';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -53,8 +57,17 @@ const App: React.FC = () => (
         <Route exact path="/settings">
           <Settings />
         </Route>
-        <Route exact path="/explain">
+        <PrivateRoute exact path="/explain">
           <ExplainMail />
+        </PrivateRoute>
+        <Route exact path="/login">
+          <Login />
+        </Route>
+        <Route exact path="/signup">
+          <Signup />
+        </Route>
+        <Route exact path="/forgot-password">
+          <ForgotPassword />
         </Route>
         <Route exact path="/">
           <Redirect to="/home" />

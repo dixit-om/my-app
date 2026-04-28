@@ -46,6 +46,11 @@ const AppMenu: React.FC = () => {
               <IonLabel>Settings</IonLabel>
             </IonItem>
           </IonMenuToggle>
+          <IonMenuToggle autoHide>
+            <IonItem routerLink="/login" routerDirection="none" detail={false} lines="none">
+              <IonLabel>Sign in</IonLabel>
+            </IonItem>
+          </IonMenuToggle>
         </IonList>
       </IonContent>
     </IonMenu>
