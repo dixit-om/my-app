@@ -60,7 +60,7 @@ const ExplainMail: React.FC = () => {
       const raw = String(e?.message ?? 'Failed to explain message');
       const message =
         raw === 'missing_gemini_key'
-          ? 'Backend Gemini key is missing. Add GEMINI_API_KEY in `backend/.env.local` and restart backend.'
+          ? 'Gemini key is missing. Add VITE_GEMINI_API_KEY in my-app/.env.local and restart app.'
           : raw === 'empty_ai_response'
             ? 'Gemini returned an empty answer. Please try again.'
             : raw;

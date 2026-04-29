@@ -1,3 +1,5 @@
+import { Capacitor } from '@capacitor/core';
+
 const DEFAULT_BASE = '';
 
 export function getApiBase(): string {
@@ -9,7 +11,7 @@ export function getApiBase(): string {
   // - Web browser should use localhost directly.
   // If someone set emulator URL globally, fix it for web builds.
   if (typeof window !== 'undefined') {
-    const isNative = (window as any).Capacitor?.isNativePlatform?.() ?? false;
+    const isNative = Capacitor.isNativePlatform();
     const isWeb = !isNative;
 
     if (isWeb && base.includes('10.0.2.2')) {

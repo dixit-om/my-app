@@ -199,6 +199,82 @@ function extractJsonStringField(raw: string, field: string): string | null {
 }
 
 export async function getPlainExplanation(text: string, language: ExplainLanguage): Promise<PlainExplanation> {
+  const key = getApiKey();
+
+  // Prefer direct Gemini calls when key is provided in my-app env.
+  if (key) {
+    const model = getModel();
+    const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent?key=${encodeURIComponent(key)}`;
+    const prompt = [
+      'You are an assistant for Indian users.',
+      `Convert the input financial message into very simple ${LANG_LABEL[language]} language.`,
+      'Return the title and summary in that same selected language only.',
+      'The summary must not be empty. Write 1-3 short sentences (plain, practical, non-legal).',
+      'Return STRICT JSON only with this shape:',
+      '{"simpleTitle":"string","summary":"string","whatToDo":"string|null","dueOrDate":"string|null","watchOut":"string|null"}',
+      'Use double quotes for keys and string values. Do NOT use single quotes.',
+      'Rules:',
+      '- Keep it short and practical.',
+      '- If any field is unavailable, set it to null.',
+      '- Never return markdown, code fences, or extra keys.',
+      '',
+      'Input message:',
+      text,
+    ].join('\n');
+
+    const res = await fetch(endpoint, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({
+        contents: [{ parts: [{ text: prompt }] }],
+        generationConfig: {
+          temperature: 0.2,
+          maxOutputTokens: 500,
+          responseMimeType: 'application/json',
+          responseSchema: {
+            type: 'OBJECT',
+            properties: {
+              simpleTitle: { type: 'STRING' },
+              summary: { type: 'STRING' },
+              whatToDo: { type: 'STRING', nullable: true },
+              dueOrDate: { type: 'STRING', nullable: true },
+              watchOut: { type: 'STRING', nullable: true },
+            },
+            required: ['simpleTitle', 'summary', 'whatToDo', 'dueOrDate', 'watchOut'],
+          },
+        },
+      }),
+    });
+
+    const data = (await res.json().catch(() => ({}))) as GeminiResponse & { error?: { message?: string } };
+    if (!res.ok) {
+      throw new Error(data?.error?.message ?? 'gemini_request_failed');
+    }
+
+    if (!data?.candidates?.length) {
+      if (data?.promptFeedback?.blockReason) {
+        throw new Error(`Response blocked: ${data.promptFeedback.blockReason}`);
+      }
+      throw new Error('No response returned from Gemini');
+    }
+
+    const answer = data.candidates
+      .flatMap((candidate) => candidate.content?.parts ?? [])
+      .map((part) => part.text ?? '')
+      .join('\n')
+      .trim();
+
+    const normalized = parseGeminiOutput(answer);
+    if (!normalized.simpleTitle && !normalized.summary) {
+      throw new Error('empty_ai_response');
+    }
+    if (!normalized.summary) {
+      return { ...normalized, summary: String(text).trim().slice(0, 240) };
+    }
+    return normalized;
+  }
+
+  // Fallback to backend if key is not provided (older setup).
   const res = await fetch(apiUrl('/api/explain'), {
     method: 'POST',
     headers: { 'content-type': 'application/json' },
