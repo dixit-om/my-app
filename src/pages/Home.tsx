@@ -19,6 +19,9 @@ import './Home.css';
 const Home: React.FC = () => {
   return (
     <PageWithMenu title="finNotify" contentClassName="home-content">
+      <div className="relative">
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-ion-primary/12 to-transparent" />
+        <div className="relative z-10 animate-fin-fade">
       <div className="fin-notify-hero">
         <h1 className="fin-notify-title">Make messages simple</h1>
         <IonText color="medium">
@@ -28,7 +31,7 @@ const Home: React.FC = () => {
           </p>
         </IonText>
       </div>
-      <IonCard className="ion-margin-horizontal home-primary-card">
+      <IonCard className="ion-margin-horizontal home-primary-card shadow-soft-lg fin-surface">
         <IonCardContent>
           <div className="home-primary-head">
             <IonIcon icon={documentTextOutline} className="home-primary-icon" color="primary" />
@@ -89,26 +92,28 @@ const Home: React.FC = () => {
       <IonListHeader className="ion-padding-horizontal">
         <IonLabel>Recent activity</IonLabel>
       </IonListHeader>
-      <IonList inset>
-        <IonItem lines="none" detail>
+      <IonList inset className="ion-padding-horizontal">
+        <IonItem lines="none" detail className="fin-list-item">
           <IonLabel>
             <h3>Card payment scheduled</h3>
             <p>₹2,400 — due in 3 days</p>
           </IonLabel>
         </IonItem>
-        <IonItem lines="none" detail>
+        <IonItem lines="none" detail className="fin-list-item">
           <IonLabel>
             <h3>SIP debit</h3>
             <p>Equity fund — runs tomorrow</p>
           </IonLabel>
         </IonItem>
-        <IonItem lines="none" detail>
+        <IonItem lines="none" detail className="fin-list-item">
           <IonLabel>
             <h3>Weekly review</h3>
             <p>Spending vs last week</p>
           </IonLabel>
         </IonItem>
       </IonList>
+        </div>
+      </div>
     </PageWithMenu>
   );
 };

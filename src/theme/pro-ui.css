@@ -1,0 +1,73 @@
+.fin-content {
+  --background: linear-gradient(180deg, rgba(56, 128, 255, 0.08) 0%, rgba(56, 128, 255, 0) 16%), var(--ion-background-color);
+}
+
+.fin-toolbar {
+  --background: color-mix(in srgb, var(--ion-background-color) 82%, var(--ion-color-primary) 18%);
+  --border-color: color-mix(in srgb, var(--ion-color-primary) 24%, transparent);
+  --color: var(--ion-text-color);
+}
+
+.fin-toolbar ion-title {
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.fin-toolbar ion-button {
+  --border-radius: 10px;
+}
+
+.fin-profile-popover ion-list {
+  min-width: 14.5rem;
+}
+
+.fin-menu-header {
+  --background: color-mix(in srgb, var(--ion-color-primary) 14%, var(--ion-background-color));
+}
+
+.fin-menu-content {
+  --background: var(--ion-background-color);
+}
+
+.fin-menu-list {
+  margin: 0.5rem 0.5rem 0;
+  border-radius: 14px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  background: color-mix(in srgb, var(--ion-background-color) 92%, var(--ion-color-primary) 8%);
+}
+
+.fin-menu-list ion-item {
+  --min-height: 2.9rem;
+  font-weight: 600;
+}
+
+.fin-surface {
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--ion-background-color) 90%, var(--ion-color-primary) 10%);
+  box-shadow: 0 10px 30px -16px rgba(0, 0, 0, 0.28);
+}
+
+.fin-list-item {
+  --background: color-mix(in srgb, var(--ion-background-color) 96%, var(--ion-color-primary) 4%);
+  border-radius: 12px;
+  margin-bottom: 0.5rem;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+body.ion-palette-dark .fin-toolbar {
+  --background: color-mix(in srgb, var(--ion-background-color) 72%, var(--ion-color-primary) 28%);
+}
+
+body.ion-palette-dark .fin-menu-list {
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+body.ion-palette-dark .fin-surface {
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+body.ion-palette-dark .fin-list-item {
+  border-color: rgba(255, 255, 255, 0.1);
+}

@@ -63,6 +63,9 @@ const ExplainMail: React.FC = () => {
 
   return (
     <PageWithMenu title="Understand a message" contentClassName="ion-padding-bottom">
+      <div className="relative">
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-36 bg-gradient-to-b from-ion-primary/10 to-transparent" />
+        <div className="relative z-10">
       <div className="ion-padding">
         <h1 className="ion-no-margin explain-title">Paste a message</h1>
         <IonText color="medium">
@@ -76,8 +79,8 @@ const ExplainMail: React.FC = () => {
         </IonChip>
       </div>
 
-      <IonList inset>
-        <IonItem>
+      <IonList inset className="ion-padding-horizontal">
+        <IonItem className="explain-paste-field" lines="none">
           <IonTextarea
             value={text}
             placeholder="e.g. paste a bank email or SMS in English…"
@@ -88,7 +91,7 @@ const ExplainMail: React.FC = () => {
             }}
           />
         </IonItem>
-        <IonItem>
+        <IonItem className="explain-lang-field" lines="none">
           <IonLabel position="stacked">Explain in this language (simple / daily words)</IonLabel>
           <IonSelect
             value={lang}
@@ -146,7 +149,7 @@ const ExplainMail: React.FC = () => {
       </div>
 
       {explanation ? (
-        <IonCard className="ion-margin-horizontal explain-result" style={{ marginTop: '0.5rem' }}>
+        <IonCard className="ion-margin-horizontal explain-result shadow-soft-lg animate-fin-fade fin-surface" style={{ marginTop: '0.5rem' }}>
           <IonCardContent>
             <div className="explain-block">
               <h2 className="explain-section-title">{explanation.simpleTitle}</h2>
@@ -184,6 +187,8 @@ const ExplainMail: React.FC = () => {
           </IonCardContent>
         </IonCard>
       ) : null}
+        </div>
+      </div>
     </PageWithMenu>
   );
 };

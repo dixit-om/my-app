@@ -14,6 +14,48 @@
   height: 1.4rem;
 }
 
+.explain-paste-field {
+  --background: var(--ion-item-background, transparent);
+  --inner-padding-end: 0;
+  --inner-padding-start: 0;
+  --padding-start: 12px;
+  --padding-end: 12px;
+  --padding-top: 8px;
+  --padding-bottom: 8px;
+  margin-bottom: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.14);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.explain-paste-field ion-textarea {
+  --padding-start: 0;
+  --padding-end: 0;
+  --padding-top: 4px;
+  --padding-bottom: 4px;
+}
+
+body.ion-palette-dark .explain-paste-field {
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.explain-lang-field {
+  --background: var(--ion-item-background, transparent);
+  --inner-padding-end: 0;
+  --inner-padding-start: 0;
+  --padding-start: 12px;
+  --padding-end: 12px;
+  --min-height: 3rem;
+  margin-top: 4px;
+  margin-bottom: 4px;
+  border: 1px solid rgba(0, 0, 0, 0.14);
+  border-radius: 10px;
+}
+
+body.ion-palette-dark .explain-lang-field {
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
 .explain-subnote {
   font-size: 0.8rem;
 }

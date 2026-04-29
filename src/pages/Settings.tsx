@@ -11,19 +11,25 @@ const Settings: React.FC = () => {
 
   return (
     <PageWithMenu title="Settings">
-      <IonList inset>
+      <div className="ion-padding animate-fin-fade">
+        <div className="fin-surface ion-padding">
+          <h2 className="ion-no-margin">Preferences</h2>
+          <p className="ion-text-color-medium ion-margin-top">Manage reminders and notification behavior.</p>
+        </div>
+      </div>
+      <IonList inset className="ion-padding-horizontal">
         <IonListHeader>
           <IonLabel>Alerts &amp; reminders</IonLabel>
         </IonListHeader>
-        <IonItem>
+        <IonItem lines="none" className="fin-list-item">
           <IonLabel>Push notifications</IonLabel>
           <IonToggle slot="end" checked={push} onIonChange={(e) => setPush(e.detail.checked)} />
         </IonItem>
-        <IonItem>
+        <IonItem lines="none" className="fin-list-item">
           <IonLabel>Email digest</IonLabel>
           <IonToggle slot="end" checked={emailDigest} onIonChange={(e) => setEmailDigest(e.detail.checked)} />
         </IonItem>
-        <IonItem>
+        <IonItem lines="none" className="fin-list-item">
           <IonLabel>Weekly spending summary</IonLabel>
           <IonToggle
             slot="end"
@@ -31,7 +37,7 @@ const Settings: React.FC = () => {
             onIonChange={(e) => setWeeklySummary(e.detail.checked)}
           />
         </IonItem>
-        <IonItem>
+        <IonItem lines="none" className="fin-list-item">
           <IonLabel>Over-budget category warnings</IonLabel>
           <IonToggle
             slot="end"
@@ -39,7 +45,7 @@ const Settings: React.FC = () => {
             onIonChange={(e) => setCategoryAlerts(e.detail.checked)}
           />
         </IonItem>
-        <IonItem>
+        <IonItem lines="none" className="fin-list-item">
           <IonLabel>Default bill reminder</IonLabel>
           <IonSelect
             value={reminderHrs}

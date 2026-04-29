@@ -20,12 +20,12 @@ const AppMenu: React.FC = () => {
   return (
     <IonMenu contentId={MAIN_CONTENT_ID} side="start" type="overlay">
       <IonHeader>
-        <IonToolbar>
+        <IonToolbar className="fin-menu-header">
           <IonTitle>finNotify</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent>
-        <IonList>
+      <IonContent className="fin-menu-content">
+        <IonList className="fin-menu-list">
           <IonListHeader>
             <IonLabel>Menu</IonLabel>
           </IonListHeader>

@@ -6,6 +6,7 @@ import {
   IonList,
   IonNote,
   IonText,
+  useIonLoading,
   useIonToast,
 } from '@ionic/react';
 import { useState } from 'react';
@@ -19,6 +20,7 @@ const Login: React.FC = () => {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [presentToast] = useIonToast();
+  const [presentLoading, dismissLoading] = useIonLoading();
   const history = useHistory();
   const location = useLocation<{ from?: string }>();
   const { signInWithToken } = useAuth();
@@ -29,29 +31,36 @@ const Login: React.FC = () => {
       return;
     }
     setLoading(true);
+    await presentLoading({ message: 'Signing you in…', spinner: 'crescent', backdropDismiss: false });
     try {
       const data = await login({ email: email.trim(), password });
       signInWithToken(data.idToken);
-      void presentToast({ message: 'Signed in.', duration: 1400, color: 'success' });
+      void presentToast({ message: 'Welcome back.', duration: 1400, color: 'success' });
       const next = location.state?.from ?? '/home';
       history.replace(next);
     } catch (e: any) {
       void presentToast({ message: String(e?.message ?? 'Login failed'), duration: 2400, color: 'danger' });
     } finally {
+      await dismissLoading();
       setLoading(false);
     }
   };
 
   return (
-    <PageWithMenu title="Sign in" contentClassName="ion-padding-bottom">
+    <PageWithMenu title="Sign in" authMode contentClassName="ion-padding-bottom">
+      <div className="relative">
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-ion-primary/12 to-transparent" />
+        <div className="relative z-10 animate-fin-fade">
       <div className="ion-padding">
         <IonText color="medium">
-          <p className="ion-no-margin">Sign in to save your explanations and view your history.</p>
+          <p className="ion-no-margin text-center max-w-sm mx-auto">Sign in to save your explanations and view your history.</p>
         </IonText>
       </div>
 
-      <IonList inset>
-        <IonItem>
+      <div className="max-w-md mx-auto px-4 pb-2">
+        <div className="rounded-2xl border border-black/10 ion-dark:border-white/10 bg-white/50 ion-dark:bg-black/25 p-1 shadow-soft-lg backdrop-blur-[6px]">
+      <IonList className="fin-auth-list" lines="none">
+        <IonItem lines="none">
           <IonLabel position="stacked">Email</IonLabel>
           <IonInput
             value={email}
@@ -61,11 +70,13 @@ const Login: React.FC = () => {
             onIonInput={(e) => setEmail(e.detail.value ?? '')}
           />
         </IonItem>
-        <IonItem>
+        <IonItem lines="none">
           <IonLabel position="stacked">Password</IonLabel>
           <IonInput value={password} type="password" placeholder="••••••••" onIonInput={(e) => setPassword(e.detail.value ?? '')} />
         </IonItem>
       </IonList>
+        </div>
+      </div>
 
       <div className="ion-padding">
         <IonButton expand="block" color="primary" onClick={onLogin} disabled={loading}>
@@ -80,6 +91,8 @@ const Login: React.FC = () => {
               Forgot password? <Link to="/forgot-password">Reset</Link>
             </IonNote>
           </div>
+        </div>
+      </div>
         </div>
       </div>
     </PageWithMenu>

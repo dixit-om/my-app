@@ -1,5 +1,5 @@
 .welcome-content {
-  --background: var(--ion-background-color, #fff);
+  --background: transparent;
 }
 
 .welcome-wrap {

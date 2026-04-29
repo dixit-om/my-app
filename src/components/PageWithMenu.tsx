@@ -13,10 +13,11 @@ import {
   IonNote,
   IonTitle,
   IonToolbar,
+  useIonLoading,
 } from '@ionic/react';
 import type { FC, ReactNode } from 'react';
 import { useMemo, useState } from 'react';
-import { personCircleOutline } from 'ionicons/icons';
+import { arrowBackOutline, personCircleOutline } from 'ionicons/icons';
 import { useHistory } from 'react-router-dom';
 import { MAIN_CONTENT_ID } from './AppMenu';
 import { useAuth } from '../auth/AuthContext';
@@ -25,23 +26,45 @@ type PageWithMenuProps = {
   title: string;
   children: ReactNode;
   contentClassName?: string;
+  /** Login/signup/forgot: show Back to Welcome instead of menu (no floating menu without drawer). */
+  authMode?: boolean;
 };
 
-const PageWithMenu: FC<PageWithMenuProps> = ({ title, children, contentClassName }) => {
+const PageWithMenu: FC<PageWithMenuProps> = ({ title, children, contentClassName, authMode }) => {
   const { isAuthed, user, signOut } = useAuth();
   const [profileOpen, setProfileOpen] = useState(false);
   const profileLabel = useMemo(() => user?.name || user?.email || 'Profile', [user]);
   const history = useHistory();
+  const [presentLoading, dismissLoading] = useIonLoading();
+
+  const handleSignOut = () => {
+    void (async () => {
+      setProfileOpen(false);
+      await presentLoading({ message: 'Signing out…', spinner: 'crescent', backdropDismiss: false });
+      try {
+        signOut();
+      } finally {
+        await dismissLoading();
+        history.replace('/welcome');
+      }
+    })();
+  };
 
   return (
     <IonPage id={MAIN_CONTENT_ID}>
       <IonHeader>
-        <IonToolbar>
+        <IonToolbar className="fin-toolbar">
           <IonButtons slot="start">
-            <IonMenuButton />
+            {authMode ? (
+              <IonButton routerLink="/welcome" routerDirection="back" aria-label="Back to welcome">
+                <IonIcon slot="icon-only" icon={arrowBackOutline} />
+              </IonButton>
+            ) : (
+              <IonMenuButton />
+            )}
           </IonButtons>
           <IonTitle>{title}</IonTitle>
-          {isAuthed ? (
+          {isAuthed && !authMode ? (
             <IonButtons slot="end">
               <IonButton
                 aria-label="Profile"
@@ -51,7 +74,7 @@ const PageWithMenu: FC<PageWithMenuProps> = ({ title, children, contentClassName
               >
                 <IonIcon icon={personCircleOutline} />
               </IonButton>
-              <IonPopover isOpen={profileOpen} onDidDismiss={() => setProfileOpen(false)}>
+              <IonPopover className="fin-profile-popover" isOpen={profileOpen} onDidDismiss={() => setProfileOpen(false)}>
                 <IonList lines="full">
                   <IonItem>
                     <IonLabel>
@@ -59,15 +82,7 @@ const PageWithMenu: FC<PageWithMenuProps> = ({ title, children, contentClassName
                       {user?.email ? <IonNote>{user.email}</IonNote> : null}
                     </IonLabel>
                   </IonItem>
-                  <IonItem
-                    button
-                    detail={false}
-                    onClick={() => {
-                      signOut();
-                      setProfileOpen(false);
-                      history.replace('/welcome');
-                    }}
-                  >
+                  <IonItem button detail={false} onClick={handleSignOut}>
                     <IonLabel>Sign out</IonLabel>
                   </IonItem>
                 </IonList>
@@ -76,7 +91,7 @@ const PageWithMenu: FC<PageWithMenuProps> = ({ title, children, contentClassName
           ) : null}
         </IonToolbar>
       </IonHeader>
-      <IonContent className={contentClassName}>{children}</IonContent>
+      <IonContent fullscreen className={['fin-content', contentClassName].filter(Boolean).join(' ')}>{children}</IonContent>
     </IonPage>
   );
 };

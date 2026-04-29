@@ -37,9 +37,11 @@ const Notifications: React.FC = () => {
 
   return (
     <PageWithMenu title="Notifications">
-      <div className="ion-padding">
-        <h2 className="ion-no-margin">Your feed</h2>
-        <p className="ion-text-color-medium">Finances and alerts in one list</p>
+      <div className="ion-padding animate-fin-fade">
+        <div className="fin-surface ion-padding">
+          <h2 className="ion-no-margin">Your feed</h2>
+          <p className="ion-text-color-medium ion-margin-top">Finances and alerts in one list</p>
+        </div>
         <IonSegment
           className="ion-margin-top"
           value={filter}
@@ -58,9 +60,9 @@ const Notifications: React.FC = () => {
           </IonSegmentButton>
         </IonSegment>
       </div>
-      <IonList inset>
+      <IonList inset className="ion-padding-horizontal">
         {rows.map((row) => (
-          <IonItem key={row.id} button detail>
+          <IonItem key={row.id} button detail lines="none" className="fin-list-item">
             <IonLabel>
               <h2>
                 {row.title}

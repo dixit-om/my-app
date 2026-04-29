@@ -1,0 +1,26 @@
+/* Rounded field shells for auth screens (works with Ionic inputs) */
+.fin-auth-list {
+  background: transparent;
+  padding: 0 0.25rem;
+}
+
+.fin-auth-list ion-item {
+  --background: var(--ion-item-background, var(--ion-background-color));
+  --inner-border-width: 0;
+  --padding-start: 14px;
+  --padding-end: 14px;
+  --min-height: 3.5rem;
+  margin-bottom: 0.75rem;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+body.ion-palette-dark .fin-auth-list ion-item {
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.fin-auth-list ion-item:last-of-type {
+  margin-bottom: 0;
+}
