@@ -91,7 +91,7 @@ const PageWithMenu: FC<PageWithMenuProps> = ({ title, children, contentClassName
           ) : null}
         </IonToolbar>
       </IonHeader>
-      <IonContent fullscreen className={['fin-content', contentClassName].filter(Boolean).join(' ')}>{children}</IonContent>
+      <IonContent className={['fin-content', contentClassName].filter(Boolean).join(' ')}>{children}</IonContent>
     </IonPage>
   );
 };
