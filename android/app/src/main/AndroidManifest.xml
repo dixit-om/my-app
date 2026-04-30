@@ -23,6 +23,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
+            <!-- finNotify share target: receive plain text from any app's Share sheet -->
+            <intent-filter android:label="@string/share_target_label">
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+
         </activity>
 
         <provider

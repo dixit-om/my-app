@@ -1,118 +1,191 @@
 import {
+  IonBadge,
   IonButton,
   IonCard,
   IonCardContent,
-  IonCol,
-  IonGrid,
   IonIcon,
   IonItem,
   IonLabel,
   IonList,
   IonListHeader,
-  IonRow,
+  IonNote,
+  IonSpinner,
   IonText,
 } from '@ionic/react';
-import { alertCircleOutline, documentTextOutline, notificationsOutline } from 'ionicons/icons';
+import {
+  arrowForward,
+  documentTextOutline,
+  shieldCheckmarkOutline,
+  sparklesOutline,
+  timeOutline,
+  volumeMediumOutline,
+} from 'ionicons/icons';
+import { useCallback, useEffect, useState } from 'react';
+import { useHistory as useRouterHistory } from 'react-router-dom';
 import PageWithMenu from '../components/PageWithMenu';
+import { useAuth } from '../auth/AuthContext';
+import type { HistoryItem } from '../services/historyApi';
+import { getHistory } from '../services/historyApi';
 import './Home.css';
 
+const LANG_LABEL: Record<string, string> = {
+  en: 'English',
+  hi: 'हिंदी',
+  ta: 'தமிழ்',
+  mr: 'मराठी',
+  te: 'తెలుగు',
+  ml: 'മലയാളം',
+  kn: 'ಕನ್ನಡ',
+  gu: 'ગુજરાતી',
+  bn: 'বাংলা',
+};
+
+function formatTime(ms: number | null): string {
+  if (!ms) return '';
+  try {
+    const d = new Date(ms);
+    const today = new Date();
+    if (d.toDateString() === today.toDateString()) {
+      return `Today · ${d.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' })}`;
+    }
+    return d.toLocaleDateString(undefined, { day: '2-digit', month: 'short' });
+  } catch {
+    return '';
+  }
+}
+
 const Home: React.FC = () => {
+  const { user } = useAuth();
+  const router = useRouterHistory();
+  const [recent, setRecent] = useState<HistoryItem[] | null>(null);
+
+  const load = useCallback(async () => {
+    try {
+      const data = await getHistory(3);
+      setRecent(data);
+    } catch {
+      setRecent([]);
+    }
+  }, []);
+
+  useEffect(() => {
+    void load();
+  }, [load]);
+
+  const greeting = user?.name ? `Hi, ${user.name.split(' ')[0]}` : 'Welcome back';
+
   return (
     <PageWithMenu title="finNotify" contentClassName="home-content">
-      <div className="relative">
-        <div className="pointer-events-none absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-ion-primary/12 to-transparent" />
-        <div className="relative z-10 animate-fin-fade">
-      <div className="fin-notify-hero">
-        <h1 className="fin-notify-title">Make messages simple</h1>
-        <IonText color="medium">
-          <p className="fin-notify-tagline">
-            Paste a bank / insurance / policy message and get a clear, short explanation in the language you choose.
-            This is a demo UI now—API will be connected next.
-          </p>
-        </IonText>
-      </div>
-      <IonCard className="ion-margin-horizontal home-primary-card shadow-soft-lg fin-surface">
-        <IonCardContent>
-          <div className="home-primary-head">
-            <IonIcon icon={documentTextOutline} className="home-primary-icon" color="primary" />
+      <div className="home-bg">
+        <div className="home-hero animate-fin-fade">
+          <IonText className="home-greeting" color="medium">
+            <p>{greeting}</p>
+          </IonText>
+          <h1 className="home-title">Make formal messages simple</h1>
+          <IonText color="medium">
+            <p className="home-tagline">
+              Paste a bank, insurance, or policy message. We'll explain what it really means in your chosen language —
+              short and clear.
+            </p>
+          </IonText>
+        </div>
+
+        <IonCard className="ion-margin-horizontal home-primary-card animate-fin-fade fin-surface">
+          <IonCardContent>
+            <div className="home-primary-head">
+              <div className="home-primary-icon-wrap" aria-hidden="true">
+                <IonIcon icon={documentTextOutline} className="home-primary-icon" />
+              </div>
+              <div className="home-primary-text">
+                <div className="home-primary-title">Understand a message</div>
+                <IonText color="medium">
+                  <p className="home-primary-subtitle">Paste it in any language. Get a plain explanation.</p>
+                </IonText>
+              </div>
+            </div>
+            <IonButton expand="block" color="primary" routerLink="/explain" routerDirection="none" className="home-primary-cta">
+              Paste &amp; explain
+              <IonIcon slot="end" icon={arrowForward} />
+            </IonButton>
+          </IonCardContent>
+        </IonCard>
+
+        <div className="home-features">
+          <div className="home-feature">
+            <IonIcon icon={sparklesOutline} className="home-feature-icon" />
             <div>
-              <div className="home-primary-title">Understand a message</div>
-              <IonText color="medium">
-                <p className="home-primary-subtitle">Paste text → choose language → get the plain meaning.</p>
-              </IonText>
+              <div className="home-feature-title">AI-powered</div>
+              <IonNote>Smart, simple summaries</IonNote>
             </div>
           </div>
-          <IonButton expand="block" color="primary" routerLink="/explain" routerDirection="none">
-            Paste &amp; explain (demo)
-          </IonButton>
-        </IonCardContent>
-      </IonCard>
-      <IonGrid className="ion-no-padding home-stats">
-        <IonRow>
-          <IonCol size="4">
-            <IonCard className="home-stat-card">
-              <IonCardContent>
-                <IonIcon icon={documentTextOutline} className="home-stat-icon" color="primary" />
-                <div className="home-stat-value">1</div>
-                <div className="home-stat-label">Explained</div>
-              </IonCardContent>
-            </IonCard>
-          </IonCol>
-          <IonCol size="4">
-            <IonCard className="home-stat-card">
-              <IonCardContent>
-                <IonIcon icon={notificationsOutline} className="home-stat-icon" color="warning" />
-                <div className="home-stat-value">2</div>
-                <div className="home-stat-label">Unread</div>
-              </IonCardContent>
-            </IonCard>
-          </IonCol>
-          <IonCol size="4">
-            <IonCard className="home-stat-card">
-              <IonCardContent>
-                <IonIcon icon={alertCircleOutline} className="home-stat-icon" color="success" />
-                <div className="home-stat-value">1</div>
-                <div className="home-stat-label">Due soon</div>
-              </IonCardContent>
-            </IonCard>
-          </IonCol>
-        </IonRow>
-      </IonGrid>
-      <IonListHeader className="ion-padding-horizontal">
-        <IonLabel>Quick actions</IonLabel>
-      </IonListHeader>
-      <div className="ion-padding-horizontal ion-padding-bottom">
-        <IonButton expand="block" color="primary" routerLink="/notifications" routerDirection="none">
-          Open notification feed
-        </IonButton>
-        <IonButton expand="block" fill="outline" color="primary" className="ion-margin-top" routerLink="/settings" routerDirection="none">
-          Settings
-        </IonButton>
-      </div>
-      <IonListHeader className="ion-padding-horizontal">
-        <IonLabel>Recent activity</IonLabel>
-      </IonListHeader>
-      <IonList inset className="ion-padding-horizontal">
-        <IonItem lines="none" detail className="fin-list-item">
-          <IonLabel>
-            <h3>Card payment scheduled</h3>
-            <p>₹2,400 — due in 3 days</p>
-          </IonLabel>
-        </IonItem>
-        <IonItem lines="none" detail className="fin-list-item">
-          <IonLabel>
-            <h3>SIP debit</h3>
-            <p>Equity fund — runs tomorrow</p>
-          </IonLabel>
-        </IonItem>
-        <IonItem lines="none" detail className="fin-list-item">
-          <IonLabel>
-            <h3>Weekly review</h3>
-            <p>Spending vs last week</p>
-          </IonLabel>
-        </IonItem>
-      </IonList>
+          <div className="home-feature">
+            <IonIcon icon={volumeMediumOutline} className="home-feature-icon" />
+            <div>
+              <div className="home-feature-title">Listen aloud</div>
+              <IonNote>Hear in your language</IonNote>
+            </div>
+          </div>
+          <div className="home-feature">
+            <IonIcon icon={shieldCheckmarkOutline} className="home-feature-icon" />
+            <div>
+              <div className="home-feature-title">Saved privately</div>
+              <IonNote>Only you see history</IonNote>
+            </div>
+          </div>
         </div>
+
+        <IonListHeader className="ion-padding-horizontal home-section-head">
+          <IonLabel>
+            <h2>Recent explanations</h2>
+          </IonLabel>
+          <IonButton
+            fill="clear"
+            size="small"
+            routerLink="/history"
+            routerDirection="none"
+          >
+            View all
+          </IonButton>
+        </IonListHeader>
+
+        {recent === null ? (
+          <div className="ion-padding ion-text-center">
+            <IonSpinner name="crescent" />
+          </div>
+        ) : recent.length === 0 ? (
+          <div className="home-empty ion-padding-horizontal ion-padding-bottom">
+            <IonIcon icon={timeOutline} className="home-empty-icon" />
+            <IonText color="medium">
+              <p>Nothing here yet. Explain your first message — it will be saved here.</p>
+            </IonText>
+            <IonButton expand="block" fill="outline" color="primary" routerLink="/explain" routerDirection="none">
+              Try it now
+            </IonButton>
+          </div>
+        ) : (
+          <IonList inset className="ion-padding-horizontal">
+            {recent.map((item) => (
+              <IonItem
+                key={item.id}
+                button
+                detail
+                lines="none"
+                className="fin-list-item"
+                routerLink={`/explain/${encodeURIComponent(item.id)}`}
+                routerDirection="none"
+              >
+                <IonLabel className="ion-text-wrap">
+                  <h3>{item.result?.simpleTitle || 'Explanation'}</h3>
+                  <p>{item.result?.summary || (item.inputText ? item.inputText.slice(0, 100) : '')}</p>
+                  <div className="home-recent-meta">
+                    <IonNote>{formatTime(item.createdAt)}</IonNote>
+                    <IonBadge color="medium">{LANG_LABEL[item.language] || item.language}</IonBadge>
+                  </div>
+                </IonLabel>
+              </IonItem>
+            ))}
+          </IonList>
+        )}
       </div>
     </PageWithMenu>
   );

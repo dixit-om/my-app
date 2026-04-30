@@ -2,8 +2,9 @@ import { Redirect, Route } from 'react-router-dom';
 import { IonApp, IonRouterOutlet, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import { AppMenu } from './components/AppMenu';
+import ShareNavigator from './components/ShareNavigator';
 import Home from './pages/Home';
-import Notifications from './pages/Notifications';
+import History from './pages/History';
 import Settings from './pages/Settings';
 import ExplainMail from './pages/ExplainMail';
 import Login from './pages/Login';
@@ -54,6 +55,7 @@ const AppRoutes: React.FC = () => {
   return (
     <IonReactRouter>
       {isAuthed ? <AppMenu /> : null}
+      <ShareNavigator />
       <IonRouterOutlet>
         <Route exact path="/welcome">
           <Welcome />
@@ -67,16 +69,19 @@ const AppRoutes: React.FC = () => {
         <Route exact path="/forgot-password">
           <ForgotPassword />
         </Route>
-        <Route exact path="/home">
+        <PrivateRoute exact path="/home">
           <Home />
-        </Route>
-        <Route exact path="/notifications">
-          <Notifications />
-        </Route>
-        <Route exact path="/settings">
+        </PrivateRoute>
+        <PrivateRoute exact path="/history">
+          <History />
+        </PrivateRoute>
+        <PrivateRoute exact path="/settings">
           <Settings />
-        </Route>
+        </PrivateRoute>
         <PrivateRoute exact path="/explain">
+          <ExplainMail />
+        </PrivateRoute>
+        <PrivateRoute exact path="/explain/:id">
           <ExplainMail />
         </PrivateRoute>
         <Route exact path="/">

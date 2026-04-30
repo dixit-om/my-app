@@ -7,17 +7,13 @@ import {
   IonMenuButton,
   IonPage,
   IonPopover,
-  IonList,
-  IonItem,
-  IonLabel,
-  IonNote,
   IonTitle,
   IonToolbar,
   useIonLoading,
 } from '@ionic/react';
 import type { FC, ReactNode } from 'react';
 import { useMemo, useState } from 'react';
-import { arrowBackOutline, personCircleOutline } from 'ionicons/icons';
+import { arrowBackOutline, logOutOutline, settingsOutline } from 'ionicons/icons';
 import { useHistory } from 'react-router-dom';
 import { MAIN_CONTENT_ID } from './AppMenu';
 import { useAuth } from '../auth/AuthContext';
@@ -34,6 +30,10 @@ const PageWithMenu: FC<PageWithMenuProps> = ({ title, children, contentClassName
   const { isAuthed, user, signOut } = useAuth();
   const [profileOpen, setProfileOpen] = useState(false);
   const profileLabel = useMemo(() => user?.name || user?.email || 'Profile', [user]);
+  const initial = useMemo(() => {
+    const source = user?.name || user?.email || 'U';
+    return source.trim().slice(0, 1).toUpperCase();
+  }, [user]);
   const history = useHistory();
   const [presentLoading, dismissLoading] = useIonLoading();
 
@@ -48,6 +48,11 @@ const PageWithMenu: FC<PageWithMenuProps> = ({ title, children, contentClassName
         history.replace('/welcome');
       }
     })();
+  };
+
+  const goToSettings = () => {
+    setProfileOpen(false);
+    history.push('/settings');
   };
 
   return (
@@ -68,24 +73,40 @@ const PageWithMenu: FC<PageWithMenuProps> = ({ title, children, contentClassName
             <IonButtons slot="end">
               <IonButton
                 aria-label="Profile"
+                className="fin-profile-btn"
                 onClick={() => {
                   setProfileOpen(true);
                 }}
               >
-                <IonIcon icon={personCircleOutline} />
+                <span className="fin-profile-btn-avatar" aria-hidden="true">{initial}</span>
               </IonButton>
-              <IonPopover className="fin-profile-popover" isOpen={profileOpen} onDidDismiss={() => setProfileOpen(false)}>
-                <IonList lines="full">
-                  <IonItem>
-                    <IonLabel>
-                      <h3>{profileLabel}</h3>
-                      {user?.email ? <IonNote>{user.email}</IonNote> : null}
-                    </IonLabel>
-                  </IonItem>
-                  <IonItem button detail={false} onClick={handleSignOut}>
-                    <IonLabel>Sign out</IonLabel>
-                  </IonItem>
-                </IonList>
+              <IonPopover
+                className="fin-profile-popover"
+                isOpen={profileOpen}
+                onDidDismiss={() => setProfileOpen(false)}
+                showBackdrop={false}
+                alignment="end"
+                side="bottom"
+              >
+                <div className="fin-profile-card">
+                  <div className="fin-profile-head">
+                    <div className="fin-profile-avatar" aria-hidden="true">{initial}</div>
+                    <div className="fin-profile-meta">
+                      <div className="fin-profile-name">{profileLabel}</div>
+                      {user?.email && user.email !== profileLabel ? (
+                        <div className="fin-profile-email">{user.email}</div>
+                      ) : null}
+                    </div>
+                  </div>
+                  <button type="button" className="fin-profile-action" onClick={goToSettings}>
+                    <IonIcon icon={settingsOutline} />
+                    <span>Settings</span>
+                  </button>
+                  <button type="button" className="fin-profile-action fin-profile-action-danger" onClick={handleSignOut}>
+                    <IonIcon icon={logOutOutline} />
+                    <span>Sign out</span>
+                  </button>
+                </div>
               </IonPopover>
             </IonButtons>
           ) : null}

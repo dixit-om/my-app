@@ -1,4 +1,5 @@
-import { IonButton, IonContent, IonPage, IonText } from '@ionic/react';
+import { IonButton, IonContent, IonIcon, IonPage, IonText } from '@ionic/react';
+import { documentTextOutline, languageOutline, volumeMediumOutline } from 'ionicons/icons';
 import { Link } from 'react-router-dom';
 import './Welcome.css';
 
@@ -6,22 +7,50 @@ const Welcome: React.FC = () => {
   return (
     <IonPage>
       <IonContent fullscreen className="welcome-content">
-        <div className="relative min-h-full bg-ion-base">
-          <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-ion-primary/15 via-ion-base to-ion-base" />
-          <div
-            className="pointer-events-none absolute inset-0 opacity-[0.35] bg-[radial-gradient(ellipse_80%_45%_at_50%_0%,var(--ion-color-primary),transparent_70%)]"
-            aria-hidden="true"
-          />
-          <div className="welcome-wrap ion-padding relative z-10 animate-fin-fade">
-            <div className="welcome-logo shadow-soft-lg" aria-hidden="true">
-              fn
+        <div className="welcome-shell">
+          <div className="welcome-bg-blob welcome-bg-blob-1" aria-hidden="true" />
+          <div className="welcome-bg-blob welcome-bg-blob-2" aria-hidden="true" />
+          <div className="welcome-wrap ion-padding animate-fin-fade">
+            <div className="welcome-logo" aria-hidden="true">
+              <span>fn</span>
             </div>
             <h1 className="welcome-title">finNotify</h1>
             <IonText color="medium">
               <p className="welcome-subtitle">
-                Turn formal bank, insurance, and policy messages into simple explanations—in your language.
+                Turn formal bank, insurance and policy messages into simple, clear explanations — in the language you understand.
               </p>
             </IonText>
+
+            <div className="welcome-features">
+              <div className="welcome-feature">
+                <div className="welcome-feature-icon" aria-hidden="true">
+                  <IonIcon icon={documentTextOutline} />
+                </div>
+                <div className="welcome-feature-text">
+                  <strong>Paste any message</strong>
+                  <span>Bank, insurance, policy, SMS or email.</span>
+                </div>
+              </div>
+              <div className="welcome-feature">
+                <div className="welcome-feature-icon" aria-hidden="true">
+                  <IonIcon icon={languageOutline} />
+                </div>
+                <div className="welcome-feature-text">
+                  <strong>9 Indian languages</strong>
+                  <span>Hindi, Marathi, Tamil, Bengali and more.</span>
+                </div>
+              </div>
+              <div className="welcome-feature">
+                <div className="welcome-feature-icon" aria-hidden="true">
+                  <IonIcon icon={volumeMediumOutline} />
+                </div>
+                <div className="welcome-feature-text">
+                  <strong>Listen aloud</strong>
+                  <span>Hear the simple version in your language.</span>
+                </div>
+              </div>
+            </div>
+
             <div className="welcome-actions">
               <Link to="/login" className="welcome-link">
                 <IonButton expand="block" color="primary">
@@ -42,4 +71,3 @@ const Welcome: React.FC = () => {
 };
 
 export default Welcome;
-

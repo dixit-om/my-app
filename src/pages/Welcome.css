@@ -1,52 +1,146 @@
 .welcome-content {
-  --background: transparent;
+  --background: var(--ion-background-color);
+}
+
+.welcome-shell {
+  position: relative;
+  min-height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background:
+    radial-gradient(60% 50% at 50% 0%, rgba(var(--ion-color-primary-rgb), 0.18), transparent 70%),
+    var(--ion-background-color);
+}
+
+.welcome-bg-blob {
+  position: absolute;
+  width: 22rem;
+  height: 22rem;
+  border-radius: 50%;
+  filter: blur(60px);
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.welcome-bg-blob-1 {
+  top: -6rem;
+  left: -8rem;
+  background: rgba(var(--ion-color-primary-rgb), 0.6);
+}
+
+.welcome-bg-blob-2 {
+  bottom: -8rem;
+  right: -6rem;
+  background: rgba(14, 165, 233, 0.45);
 }
 
 .welcome-wrap {
-  min-height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  position: relative;
+  z-index: 1;
+  width: 100%;
   max-width: 26rem;
-  margin: 0 auto;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
 }
 
 .welcome-logo {
-  width: 4.25rem;
-  height: 4.25rem;
-  border-radius: 1.1rem;
+  width: 4.5rem;
+  height: 4.5rem;
+  border-radius: 1.25rem;
   display: grid;
   place-items: center;
   font-weight: 800;
-  letter-spacing: 0.03em;
-  font-size: 1.25rem;
-  color: var(--ion-color-primary-contrast, #fff);
-  background: var(--ion-color-primary, #3880ff);
-  margin: 0 auto 1rem;
+  font-size: 1.4rem;
+  color: var(--ion-color-primary-contrast);
+  background: linear-gradient(135deg, var(--ion-color-primary), var(--ion-color-primary-shade));
+  box-shadow: 0 12px 32px -8px rgba(var(--ion-color-primary-rgb), 0.55);
+  margin: 0 auto 1.25rem;
   text-transform: lowercase;
+  letter-spacing: 0.02em;
 }
 
 .welcome-title {
   text-align: center;
   margin: 0 0 0.5rem;
-  font-size: 1.6rem;
+  font-size: 2rem;
   font-weight: 800;
-  color: var(--ion-text-color, #1e1e1e);
+  letter-spacing: -0.01em;
+  color: var(--ion-text-color);
 }
 
 .welcome-subtitle {
   text-align: center;
-  margin: 0 0 1.5rem;
-  line-height: 1.5;
+  margin: 0 auto 1.5rem;
+  line-height: 1.55;
+  font-size: 1rem;
+  max-width: 22rem;
+}
+
+.welcome-features {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin: 0 0 1.75rem;
+}
+
+.welcome-feature {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.75rem 0.9rem;
+  border-radius: 14px;
+  background: var(--ion-card-background);
+  border: 1px solid rgba(15, 23, 42, 0.06);
+  box-shadow: 0 4px 14px -8px rgba(15, 23, 42, 0.18);
+}
+
+body.ion-palette-dark .welcome-feature {
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 14px -8px rgba(0, 0, 0, 0.5);
+}
+
+.welcome-feature-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  background: rgba(var(--ion-color-primary-rgb), 0.12);
+  color: var(--ion-color-primary);
+  font-size: 1.25rem;
+  flex-shrink: 0;
+}
+
+.welcome-feature-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.welcome-feature-text strong {
   font-size: 0.95rem;
+  color: var(--ion-text-color);
+}
+
+.welcome-feature-text span {
+  font-size: 0.82rem;
+  color: var(--ion-color-medium);
+  margin-top: 0.1rem;
 }
 
 .welcome-actions {
   width: 100%;
 }
 
+.welcome-actions ion-button {
+  --border-radius: 12px;
+  height: 3rem;
+  font-weight: 700;
+  font-size: 1rem;
+}
+
 .welcome-link {
   text-decoration: none;
   display: block;
 }
-

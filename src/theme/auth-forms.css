@@ -1,19 +1,51 @@
-/* Rounded field shells for auth screens (works with Ionic inputs) */
+/* ============================================================
+   Auth screen form fields (Sign in / Create account / Reset)
+   Rounded "card" style fields with proper room for stacked labels.
+   ============================================================ */
+
 .fin-auth-list {
   background: transparent;
-  padding: 0 0.25rem;
+  padding: 0;
 }
 
 .fin-auth-list ion-item {
-  --background: var(--ion-item-background, var(--ion-background-color));
+  --background: var(--ion-card-background);
   --inner-border-width: 0;
-  --padding-start: 14px;
-  --padding-end: 14px;
-  --min-height: 3.5rem;
-  margin-bottom: 0.75rem;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  border-radius: 12px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --padding-start: 16px;
+  --padding-end: 16px;
+  --padding-top: 10px;
+  --padding-bottom: 10px;
+  --min-height: 4.4rem;
+  margin-bottom: 0.85rem;
+  border: 1px solid rgba(15, 23, 42, 0.10);
+  border-radius: 14px;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+  transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+
+.fin-auth-list ion-item ion-label[position='stacked'],
+.fin-auth-list ion-item ion-label.label-stacked {
+  font-size: 0.78rem !important;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--ion-color-medium);
+  margin-bottom: 0.25rem;
+  transform: none;
+}
+
+.fin-auth-list ion-item ion-input {
+  --padding-start: 0;
+  --padding-end: 0;
+  --padding-top: 2px;
+  --padding-bottom: 2px;
+  font-size: 1rem;
+  color: var(--ion-text-color);
+}
+
+.fin-auth-list ion-item:focus-within {
+  border-color: rgba(var(--ion-color-primary-rgb), 0.55);
+  box-shadow: 0 0 0 3px rgba(var(--ion-color-primary-rgb), 0.14);
 }
 
 body.ion-palette-dark .fin-auth-list ion-item {
@@ -23,4 +55,51 @@ body.ion-palette-dark .fin-auth-list ion-item {
 
 .fin-auth-list ion-item:last-of-type {
   margin-bottom: 0;
+}
+
+/* Auth screen wrapper — clean, no nested glass card needed */
+.fin-auth-wrap {
+  max-width: 26rem;
+  margin: 0 auto;
+  padding: 0 1rem 0.5rem;
+}
+
+.fin-auth-intro {
+  text-align: center;
+  margin: 0 auto 1.25rem;
+  max-width: 22rem;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.fin-auth-cta {
+  --border-radius: 12px;
+  height: 3.1rem;
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: 0.02em;
+  margin-top: 1.25rem;
+}
+
+.fin-auth-foot {
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.fin-auth-foot ion-note {
+  font-size: 0.88rem;
+}
+
+.fin-auth-foot a {
+  color: var(--ion-color-primary);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.fin-auth-foot a:hover {
+  text-decoration: underline;
+}
+
+.fin-auth-foot-row {
+  margin-top: 0.4rem;
 }

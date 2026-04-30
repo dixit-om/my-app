@@ -13,6 +13,7 @@ import { useState } from 'react';
 import { Link, useHistory, useLocation } from 'react-router-dom';
 import PageWithMenu from '../components/PageWithMenu';
 import { login } from '../services/authApi';
+import { friendlyAuthError } from '../services/authErrors';
 import { useAuth } from '../auth/AuthContext';
 
 const Login: React.FC = () => {
@@ -39,7 +40,7 @@ const Login: React.FC = () => {
       const next = location.state?.from ?? '/home';
       history.replace(next);
     } catch (e: any) {
-      void presentToast({ message: String(e?.message ?? 'Login failed'), duration: 2400, color: 'danger' });
+      void presentToast({ message: friendlyAuthError(e), duration: 3200, color: 'danger' });
     } finally {
       await dismissLoading();
       setLoading(false);
@@ -48,51 +49,56 @@ const Login: React.FC = () => {
 
   return (
     <PageWithMenu title="Sign in" authMode contentClassName="ion-padding-bottom">
-      <div className="relative">
+      <div className="relative animate-fin-fade">
         <div className="pointer-events-none absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-ion-primary/12 to-transparent" />
-        <div className="relative z-10 animate-fin-fade">
-      <div className="ion-padding">
-        <IonText color="medium">
-          <p className="ion-no-margin text-center max-w-sm mx-auto">Sign in to save your explanations and view your history.</p>
-        </IonText>
-      </div>
+        <div className="relative z-10">
+          <div className="ion-padding-top ion-padding-horizontal fin-auth-wrap">
+            <IonText color="medium">
+              <p className="fin-auth-intro">Sign in to save your explanations and view your history.</p>
+            </IonText>
+            <IonList className="fin-auth-list" lines="none">
+              <IonItem lines="none">
+                <IonLabel position="stacked">Email</IonLabel>
+                <IonInput
+                  value={email}
+                  type="email"
+                  inputMode="email"
+                  placeholder="you@example.com"
+                  onIonInput={(e) => setEmail(e.detail.value ?? '')}
+                />
+              </IonItem>
+              <IonItem lines="none">
+                <IonLabel position="stacked">Password</IonLabel>
+                <IonInput
+                  value={password}
+                  type="password"
+                  placeholder="••••••••"
+                  onIonInput={(e) => setPassword(e.detail.value ?? '')}
+                />
+              </IonItem>
+            </IonList>
 
-      <div className="max-w-md mx-auto px-4 pb-2">
-        <div className="rounded-2xl border border-black/10 ion-dark:border-white/10 bg-white/50 ion-dark:bg-black/25 p-1 shadow-soft-lg backdrop-blur-[6px]">
-      <IonList className="fin-auth-list" lines="none">
-        <IonItem lines="none">
-          <IonLabel position="stacked">Email</IonLabel>
-          <IonInput
-            value={email}
-            type="email"
-            inputMode="email"
-            placeholder="you@example.com"
-            onIonInput={(e) => setEmail(e.detail.value ?? '')}
-          />
-        </IonItem>
-        <IonItem lines="none">
-          <IonLabel position="stacked">Password</IonLabel>
-          <IonInput value={password} type="password" placeholder="••••••••" onIonInput={(e) => setPassword(e.detail.value ?? '')} />
-        </IonItem>
-      </IonList>
-        </div>
-      </div>
+            <IonButton
+              expand="block"
+              color="primary"
+              onClick={onLogin}
+              disabled={loading}
+              className="fin-auth-cta"
+            >
+              {loading ? 'Signing in…' : 'Sign in'}
+            </IonButton>
 
-      <div className="ion-padding">
-        <IonButton expand="block" color="primary" onClick={onLogin} disabled={loading}>
-          {loading ? 'Signing in…' : 'Sign in'}
-        </IonButton>
-        <div className="ion-text-center ion-margin-top">
-          <IonNote>
-            New here? <Link to="/signup">Create account</Link>
-          </IonNote>
-          <div className="ion-margin-top">
-            <IonNote>
-              Forgot password? <Link to="/forgot-password">Reset</Link>
-            </IonNote>
+            <div className="fin-auth-foot">
+              <IonNote>
+                New here? <Link to="/signup">Create account</Link>
+              </IonNote>
+              <div className="fin-auth-foot-row">
+                <IonNote>
+                  Forgot password? <Link to="/forgot-password">Reset</Link>
+                </IonNote>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
         </div>
       </div>
     </PageWithMenu>
@@ -100,4 +106,3 @@ const Login: React.FC = () => {
 };
 
 export default Login;
-
