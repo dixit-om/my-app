@@ -1,0 +1,64 @@
+/* ---------------------------------------------------------------------------
+ * Stitch design system support
+ * Loaded once, used by every page that adopts the Stitch UI mockups.
+ * Keep additions minimal so we don't bleed into pages still on the old UI.
+ * --------------------------------------------------------------------------- */
+
+/* Material Symbols Outlined — the Google Font is loaded in index.html, this
+ * just declares the renderer class so <span class="material-symbols-outlined">
+ * actually picks up the icon glyph + ligature behavior. */
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  /* line-height:1 keeps the icon tight. Combined with inline-flex centering
+   * below, the icon's visual middle aligns with adjacent text across the app,
+   * regardless of the parent's line-height. */
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  /* vertical-align:middle fixes baseline alignment when used inline with text
+   * (buttons, chips, inline labels) without a flex parent. In flex parents
+   * the container's items-center still wins; both together guarantee the icon
+   * and its label always sit on the same horizontal line. */
+  vertical-align: middle;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-feature-settings: 'liga';
+  -webkit-font-smoothing: antialiased;
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+/* Manrope has a tall x-height, so its optical text centre sits ~1-2px above
+ * the geometric middle of its line box. When a Material Symbol is placed in
+ * a `flex items-center` row next to Manrope text, the icon's geometric centre
+ * ends up slightly *below* the text's optical centre and reads as "off by a
+ * pixel". Lifting every icon by 1.5px corrects the visual centre so icons and
+ * their adjacent headings/labels sit on the same line across the app. This is
+ * a transform so it has zero layout impact — pure rendering adjustment. */
+.material-symbols-outlined {
+  transform: translateY(-1.5px);
+}
+
+/* Manrope helper — pages opting into the Stitch design tag their root with
+ * font-manrope; everything else continues to use the Ionic default. */
+.font-manrope {
+  font-family: 'Manrope', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* The Stitch mockups use an off-white surface (#f7faf8) instead of Ionic's
+ * default pure white. Tag the IonContent with .fin-stitch-bg to opt in. */
+ion-content.fin-stitch-bg {
+  --background: #f7faf8;
+  --color: #181c1c;
+}
+
+/* Bottom nav — pad for the gesture-area / home indicator on Android & iOS. */
+.fin-stitch-bottom-nav {
+  padding-bottom: max(1.25rem, calc(env(safe-area-inset-bottom) + 0.5rem));
+}

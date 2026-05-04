@@ -1,32 +1,12 @@
-import {
-  IonBadge,
-  IonButton,
-  IonCard,
-  IonCardContent,
-  IonIcon,
-  IonItem,
-  IonLabel,
-  IonList,
-  IonListHeader,
-  IonNote,
-  IonSpinner,
-  IonText,
-} from '@ionic/react';
-import {
-  arrowForward,
-  documentTextOutline,
-  shieldCheckmarkOutline,
-  sparklesOutline,
-  timeOutline,
-  volumeMediumOutline,
-} from 'ionicons/icons';
-import { useCallback, useEffect, useState } from 'react';
-import { useHistory as useRouterHistory } from 'react-router-dom';
-import PageWithMenu from '../components/PageWithMenu';
+import { IonSpinner } from '@ionic/react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useHistory as useRouterHistory, Link } from 'react-router-dom';
+import StitchBottomNav from '../components/StitchBottomNav';
+import StitchPage from '../components/StitchPage';
+import StitchHeader from '../components/StitchHeader';
 import { useAuth } from '../auth/AuthContext';
 import type { HistoryItem } from '../services/historyApi';
 import { getHistory } from '../services/historyApi';
-import './Home.css';
 
 const LANG_LABEL: Record<string, string> = {
   en: 'English',
@@ -72,122 +52,131 @@ const Home: React.FC = () => {
     void load();
   }, [load]);
 
-  const greeting = user?.name ? `Hi, ${user.name.split(' ')[0]}` : 'Welcome back';
+  const firstName = useMemo(() => {
+    const source = user?.name || user?.email || '';
+    const fromName = source.split(' ')[0]?.trim();
+    if (fromName) return fromName.split('@')[0];
+    return 'friend';
+  }, [user]);
+
+  const goToExplain = () => router.push('/explain');
 
   return (
-    <PageWithMenu title="finNotify" contentClassName="home-content">
-      <div className="home-bg">
-        <div className="home-hero animate-fin-fade">
-          <IonText className="home-greeting" color="medium">
-            <p>{greeting}</p>
-          </IonText>
-          <h1 className="home-title">Make formal messages simple</h1>
-          <IonText color="medium">
-            <p className="home-tagline">
-              Paste a bank, insurance, or policy message. We'll explain what it really means in your chosen language —
-              short and clear.
-            </p>
-          </IonText>
-        </div>
+    <StitchPage bottomNav={<StitchBottomNav active="home" />}>
+      <StitchHeader variant="main" />
 
-        <IonCard className="ion-margin-horizontal home-primary-card animate-fin-fade fin-surface">
-          <IonCardContent>
-            <div className="home-primary-head">
-              <div className="home-primary-icon-wrap" aria-hidden="true">
-                <IonIcon icon={documentTextOutline} className="home-primary-icon" />
-              </div>
-              <div className="home-primary-text">
-                <div className="home-primary-title">Understand a message</div>
-                <IonText color="medium">
-                  <p className="home-primary-subtitle">Paste it in any language. Get a plain explanation.</p>
-                </IonText>
-              </div>
-            </div>
-            <IonButton expand="block" color="primary" routerLink="/explain" routerDirection="none" className="home-primary-cta">
-              Paste &amp; explain
-              <IonIcon slot="end" icon={arrowForward} />
-            </IonButton>
-          </IonCardContent>
-        </IonCard>
+      <main className="max-w-2xl mx-auto px-6 pt-6 pb-32">
+            <section className="mb-6">
+              <h2 className="text-[32px] leading-[44px] font-bold tracking-tight text-teal-800">
+                Namaste, {firstName}
+              </h2>
+              <p className="text-[18px] leading-[28px] mt-1 italic text-stone-500">आपका स्वागत है</p>
+            </section>
 
-        <div className="home-features">
-          <div className="home-feature">
-            <IonIcon icon={sparklesOutline} className="home-feature-icon" />
-            <div>
-              <div className="home-feature-title">AI-powered</div>
-              <IonNote>Smart, simple summaries</IonNote>
-            </div>
-          </div>
-          <div className="home-feature">
-            <IonIcon icon={volumeMediumOutline} className="home-feature-icon" />
-            <div>
-              <div className="home-feature-title">Listen aloud</div>
-              <IonNote>Hear in your language</IonNote>
-            </div>
-          </div>
-          <div className="home-feature">
-            <IonIcon icon={shieldCheckmarkOutline} className="home-feature-icon" />
-            <div>
-              <div className="home-feature-title">Saved privately</div>
-              <IonNote>Only you see history</IonNote>
-            </div>
-          </div>
-        </div>
-
-        <IonListHeader className="ion-padding-horizontal home-section-head">
-          <IonLabel>
-            <h2>Recent explanations</h2>
-          </IonLabel>
-          <IonButton
-            fill="clear"
-            size="small"
-            routerLink="/history"
-            routerDirection="none"
-          >
-            View all
-          </IonButton>
-        </IonListHeader>
-
-        {recent === null ? (
-          <div className="ion-padding ion-text-center">
-            <IonSpinner name="crescent" />
-          </div>
-        ) : recent.length === 0 ? (
-          <div className="home-empty ion-padding-horizontal ion-padding-bottom">
-            <IonIcon icon={timeOutline} className="home-empty-icon" />
-            <IonText color="medium">
-              <p>Nothing here yet. Explain your first message — it will be saved here.</p>
-            </IonText>
-            <IonButton expand="block" fill="outline" color="primary" routerLink="/explain" routerDirection="none">
-              Try it now
-            </IonButton>
-          </div>
-        ) : (
-          <IonList inset className="ion-padding-horizontal">
-            {recent.map((item) => (
-              <IonItem
-                key={item.id}
-                button
-                detail
-                lines="none"
-                className="fin-list-item"
-                routerLink={`/explain/${encodeURIComponent(item.id)}`}
-                routerDirection="none"
+            <section className="mb-6">
+              <button
+                type="button"
+                onClick={goToExplain}
+                className="w-full text-left group relative overflow-hidden bg-teal-700 text-teal-50 rounded-3xl p-8 shadow-[0_4px_20px_rgba(0,0,0,0.05)] transition-all hover:shadow-xl active:scale-[0.98]"
               >
-                <IonLabel className="ion-text-wrap">
-                  <h3>{item.result?.simpleTitle || 'Explanation'}</h3>
-                  <p>{item.result?.summary || (item.inputText ? item.inputText.slice(0, 100) : '')}</p>
-                  <div className="home-recent-meta">
-                    <IonNote>{formatTime(item.createdAt)}</IonNote>
-                    <IonBadge color="medium">{LANG_LABEL[item.language] || item.language}</IonBadge>
+                <div className="flex flex-col gap-6 relative z-10">
+                  <div className="bg-white/20 w-16 h-16 rounded-2xl flex items-center justify-center">
+                    <span
+                      className="material-symbols-outlined text-4xl"
+                      style={{ fontVariationSettings: "'FILL' 1" }}
+                    >
+                      content_paste
+                    </span>
                   </div>
-                </IonLabel>
-              </IonItem>
-            ))}
-          </IonList>
-        )}
-      </div>
-    </PageWithMenu>
+                  <div>
+                    <h3 className="text-[24px] leading-[36px] font-semibold mb-2">
+                      Paste a message and explain it
+                    </h3>
+                    <p className="text-[16px] leading-[24px] opacity-80">
+                      Copy any SMS from your bank and let us simplify it for you in plain language.
+                    </p>
+                  </div>
+                </div>
+                <div className="absolute -right-8 -bottom-8 opacity-10 pointer-events-none">
+                  <span className="material-symbols-outlined text-[180px]">security</span>
+                </div>
+              </button>
+            </section>
+
+            <section>
+              <div className="flex items-center justify-between mb-4">
+                <h4 className="text-[14px] leading-[20px] font-bold text-stone-600 uppercase tracking-widest">
+                  Recent explanations
+                </h4>
+                {recent && recent.length > 0 ? (
+                  <Link
+                    to="/history"
+                    className="text-[14px] leading-[20px] font-bold uppercase tracking-wider text-teal-700 hover:underline"
+                  >
+                    View all
+                  </Link>
+                ) : null}
+              </div>
+
+              {recent === null ? (
+                <div className="bg-stone-100 rounded-3xl p-12 flex justify-center">
+                  <IonSpinner name="crescent" />
+                </div>
+              ) : recent.length === 0 ? (
+                <div className="bg-stone-100 rounded-3xl p-12 flex flex-col items-center text-center gap-6 border-2 border-dashed border-stone-300/60">
+                  <div className="w-48 h-48 bg-white/50 rounded-full flex items-center justify-center relative shadow-inner overflow-hidden">
+                    <img
+                      alt="A friendly illustration of a digital assistant"
+                      className="w-full h-full object-cover opacity-60"
+                      src="https://lh3.googleusercontent.com/aida-public/AB6AXuCol-GsuNYWOBDHAoQJgSFXCu6KHgZYTtvTyGgd28J3B5anY0wfK-RtCbIoBaOsctMoIJFlN_6CNsIG6xa2QeePolPM51ZOozh2nYN8Q6eCkeS8wTRNea1p2XaBNW2afnwtPBhMWu-57rr4HHGoKaPBIHMD0YZc4xAFpXjvkW6BxISzT29bE0ZjWE45egdPMzrR8ppiFLSzyuH7vKQzhfqEcIYwLlNFkO9U1rsH4LrsQk8YguoV8wD7Pu1b6sJ_uGL7I7cOzdF5n-o"
+                      onError={(e) => {
+                        e.currentTarget.style.display = 'none';
+                      }}
+                    />
+                    <span className="material-symbols-outlined absolute text-teal-700/40 text-6xl">
+                      history_edu
+                    </span>
+                  </div>
+                  <div className="max-w-xs">
+                    <p className="text-[18px] leading-[28px] font-semibold mb-2 text-stone-900">
+                      You haven't explained any messages yet.
+                    </p>
+                    <p className="text-[16px] leading-[24px] text-stone-600">
+                      Paste your first one above! We'll show your history right here for easy access.
+                    </p>
+                  </div>
+                </div>
+              ) : (
+                <ul className="flex flex-col gap-3">
+                  {recent.map((item) => (
+                    <li key={item.id}>
+                      <Link
+                        to={`/explain/${encodeURIComponent(item.id)}`}
+                        className="block bg-white rounded-2xl p-5 shadow-[0_2px_10px_rgba(0,0,0,0.04)] hover:shadow-md active:scale-[0.99] transition-all"
+                      >
+                        <h3 className="text-[18px] leading-[28px] font-semibold text-stone-900 mb-1">
+                          {item.result?.simpleTitle || 'Explanation'}
+                        </h3>
+                        <p className="text-[16px] leading-[24px] text-stone-600 line-clamp-2">
+                          {item.result?.summary ||
+                            (item.inputText ? item.inputText.slice(0, 120) : '')}
+                        </p>
+                        <div className="flex items-center justify-between mt-3">
+                          <span className="text-[14px] text-stone-500">
+                            {formatTime(item.createdAt)}
+                          </span>
+                          <span className="text-[12px] font-bold uppercase tracking-wider text-teal-700 bg-teal-50 px-2.5 py-1 rounded-full">
+                            {LANG_LABEL[item.language] || item.language}
+                          </span>
+                        </div>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </section>
+      </main>
+    </StitchPage>
   );
 };
 

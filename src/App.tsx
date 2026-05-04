@@ -46,6 +46,7 @@ import './theme/variables.css';
 import './theme/tailwind.css';
 import './theme/auth-forms.css';
 import './theme/pro-ui.css';
+import './theme/stitch-ui.css';
 
 setupIonicReact();
 
