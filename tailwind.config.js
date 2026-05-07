@@ -96,6 +96,7 @@ export default {
 
       spacing: {
         // Stitch spacing aliases — named so raw Stitch HTML drops in verbatim.
+        unit: '8px',
         container_padding: '24px',
         gutter_md: '16px',
         stack_gap_md: '12px',

@@ -34,15 +34,12 @@
   font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
 }
 
-/* Manrope has a tall x-height, so its optical text centre sits ~1-2px above
- * the geometric middle of its line box. When a Material Symbol is placed in
- * a `flex items-center` row next to Manrope text, the icon's geometric centre
- * ends up slightly *below* the text's optical centre and reads as "off by a
- * pixel". Lifting every icon by 1.5px corrects the visual centre so icons and
- * their adjacent headings/labels sit on the same line across the app. This is
- * a transform so it has zero layout impact — pure rendering adjustment. */
-.material-symbols-outlined {
-  transform: translateY(-1.5px);
+/* The Stitch sticky header needs to clear the device's status bar / notch on
+ * native builds (Capacitor) and still look balanced in the browser. Using
+ * env(safe-area-inset-top) falls back to 0 on web, where we top up with the
+ * normal 1rem so the header never hugs the very top edge of the viewport. */
+.fin-stitch-header {
+  padding-top: calc(env(safe-area-inset-top, 0px) + 1rem);
 }
 
 /* Manrope helper — pages opting into the Stitch design tag their root with

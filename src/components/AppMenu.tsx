@@ -15,6 +15,7 @@ import {
 import {
   documentTextOutline,
   homeOutline,
+  mailOutline,
   settingsOutline,
   timeOutline,
 } from 'ionicons/icons';
@@ -58,6 +59,18 @@ const AppMenu: React.FC = () => {
             <IonItem routerLink="/explain" routerDirection="none" detail={false} lines="full">
               <IonIcon slot="start" icon={documentTextOutline} />
               <IonLabel>Understand a message</IonLabel>
+            </IonItem>
+          </IonMenuToggle>
+          <IonMenuToggle autoHide>
+            <IonItem routerLink="/connect-gmail" routerDirection="none" detail={false} lines="full">
+              <IonIcon slot="start" icon={mailOutline} />
+              <IonLabel>Connect Gmail</IonLabel>
+            </IonItem>
+          </IonMenuToggle>
+          <IonMenuToggle autoHide>
+            <IonItem routerLink="/gmail" routerDirection="none" detail={false} lines="full">
+              <IonIcon slot="start" icon={mailOutline} />
+              <IonLabel>Your bank emails</IonLabel>
             </IonItem>
           </IonMenuToggle>
           <IonMenuToggle autoHide>

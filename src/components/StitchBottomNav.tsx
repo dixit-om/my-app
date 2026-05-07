@@ -1,7 +1,7 @@
 import { Link, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
-export type StitchNavKey = 'home' | 'understand' | 'history' | 'settings';
+export type StitchNavKey = 'home' | 'understand' | 'history' | 'settings' | 'gmail';
 
 type StitchBottomNavProps = {
   /** Optional override of the active key. Defaults to a match against the current route. */
@@ -47,6 +47,13 @@ const ALL_ITEMS: Record<StitchNavKey, Item> = {
     icon: 'settings',
     to: '/settings',
     match: (p) => p.startsWith('/settings'),
+  },
+  gmail: {
+    key: 'gmail',
+    label: 'Gmail',
+    icon: 'mail',
+    to: '/gmail',
+    match: (p) => p.startsWith('/gmail') || p.startsWith('/connect-gmail'),
   },
 };
 

@@ -35,10 +35,15 @@ type StitchHeaderProps = {
    * replacing the default right-side slot. Rarely needed.
    */
   rightSlot?: ReactNode;
+  /**
+   * When variant is `main`, replaces the centred "finNotify" title (e.g.
+   * "Your Bank Emails" on the Gmail inbox screen).
+   */
+  centerTitle?: string;
 };
 
 const HEADER_CLASS =
-  'bg-stone-50 border-b border-stone-200 flex justify-between items-center w-full px-6 py-4 sticky top-0 z-40';
+  'fin-stitch-header bg-stone-50 border-b border-stone-200 flex justify-between items-center w-full px-6 pb-4 sticky top-0 z-40';
 
 const ICON_BTN_CLASS =
   'p-2 rounded-full hover:bg-stone-100 transition-transform active:scale-95 duration-150 flex items-center justify-center';
@@ -55,6 +60,7 @@ const StitchHeader: React.FC<StitchHeaderProps> = ({
   onMenu,
   onAccount,
   rightSlot,
+  centerTitle,
 }) => {
   const router = useRouterHistory();
 
@@ -114,7 +120,15 @@ const StitchHeader: React.FC<StitchHeaderProps> = ({
             <span className="material-symbols-outlined text-teal-700">menu</span>
           </button>
         )}
-        <h1 className="font-bold text-xl text-teal-700 tracking-tight">finNotify</h1>
+        <h1
+          className={
+            variant === 'back' || !centerTitle
+              ? 'font-bold text-xl text-teal-700 tracking-tight'
+              : 'font-bold text-lg text-teal-700 tracking-tight leading-tight'
+          }
+        >
+          {variant === 'back' ? 'finNotify' : centerTitle ?? 'finNotify'}
+        </h1>
       </div>
 
       {rightSlot ?? (
@@ -124,7 +138,9 @@ const StitchHeader: React.FC<StitchHeaderProps> = ({
           aria-label="Account"
           className={`${ICON_BTN_CLASS} gap-2`}
         >
-          <span className="material-symbols-outlined text-teal-700">account_circle</span>
+          <span className="material-symbols-outlined text-teal-700" style={{ fontSize: 24 }}>
+            account_circle
+          </span>
         </button>
       )}
     </header>

@@ -7,6 +7,8 @@ import Home from './pages/Home';
 import History from './pages/History';
 import Settings from './pages/Settings';
 import ExplainMail from './pages/ExplainMail';
+import GmailBox from './pages/GmailBox';
+import ConnectGmail from './pages/ConnectGmail';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import ForgotPassword from './pages/ForgotPassword';
@@ -78,6 +80,12 @@ const AppRoutes: React.FC = () => {
         </PrivateRoute>
         <PrivateRoute exact path="/settings">
           <Settings />
+        </PrivateRoute>
+        <PrivateRoute exact path="/gmail">
+          <GmailBox />
+        </PrivateRoute>
+        <PrivateRoute exact path="/connect-gmail">
+          <ConnectGmail />
         </PrivateRoute>
         <PrivateRoute exact path="/explain">
           <ExplainMail />

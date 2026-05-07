@@ -1,6 +1,6 @@
 import { IonSpinner, useIonToast } from '@ionic/react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 import StitchBottomNav from '../components/StitchBottomNav';
 import StitchPage from '../components/StitchPage';
 import StitchHeader from '../components/StitchHeader';
@@ -53,6 +53,7 @@ function isSpeechAvailable(): boolean {
 
 const ExplainMail: React.FC = () => {
   const { id: routeId } = useParams<{ id?: string }>();
+  const location = useLocation<{ prefillText?: string }>();
   const { prefs, loaded: prefsLoaded } = usePreferences();
   const { pending: pendingShare, consume: consumeShare } = useShareReceiver();
 
@@ -98,6 +99,16 @@ const ExplainMail: React.FC = () => {
       active = false;
     };
   }, [routeId, presentToast]);
+
+  // Prefill from Gmail inbox (or any in-app navigation with state.prefillText).
+  useEffect(() => {
+    if (routeId) return;
+    const pre = location.state?.prefillText?.trim();
+    if (!pre) return;
+    setText(pre);
+    setExplanation(null);
+    setFromShare(false);
+  }, [routeId, location.state?.prefillText]);
 
   // Stop any speech when leaving the page.
   useEffect(() => {
@@ -380,34 +391,34 @@ const ExplainMail: React.FC = () => {
                       type="button"
                       onClick={onSpeak}
                       aria-label={speaking ? 'Stop reading' : 'Listen'}
+                      title={speaking ? 'Stop reading' : 'Listen'}
                       className={
                         speaking
-                          ? 'flex items-center gap-2 px-4 py-2 rounded-full bg-teal-100 text-teal-800 font-bold text-[14px] uppercase tracking-wider transition-all active:scale-95'
-                          : 'flex items-center gap-2 px-4 py-2 rounded-full hover:bg-stone-200 transition-all text-teal-700 font-bold text-[14px] uppercase tracking-wider active:scale-95'
+                          ? 'w-11 h-11 flex items-center justify-center rounded-full bg-teal-100 text-teal-800 transition-all active:scale-95'
+                          : 'w-11 h-11 flex items-center justify-center rounded-full hover:bg-stone-200 transition-all text-teal-700 active:scale-95'
                       }
                     >
                       <span className="material-symbols-outlined">
                         {speaking ? 'stop_circle' : 'volume_up'}
                       </span>
-                      <span>{speaking ? 'Stop' : 'Listen'}</span>
                     </button>
                     <button
                       type="button"
                       onClick={onCopy}
                       aria-label="Copy"
-                      className="flex items-center gap-2 px-4 py-2 rounded-full hover:bg-stone-200 transition-all text-stone-600 font-bold text-[14px] uppercase tracking-wider active:scale-95"
+                      title="Copy"
+                      className="w-11 h-11 flex items-center justify-center rounded-full hover:bg-stone-200 transition-all text-stone-600 active:scale-95"
                     >
                       <span className="material-symbols-outlined">content_copy</span>
-                      <span>Copy</span>
                     </button>
                     <button
                       type="button"
                       onClick={onShare}
                       aria-label="Share"
-                      className="flex items-center gap-2 px-4 py-2 rounded-full hover:bg-stone-200 transition-all text-stone-600 font-bold text-[14px] uppercase tracking-wider active:scale-95"
+                      title="Share"
+                      className="w-11 h-11 flex items-center justify-center rounded-full hover:bg-stone-200 transition-all text-stone-600 active:scale-95"
                     >
                       <span className="material-symbols-outlined">share</span>
-                      <span>Share</span>
                     </button>
                   </div>
 
